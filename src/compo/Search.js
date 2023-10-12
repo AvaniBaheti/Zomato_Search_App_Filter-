@@ -4,6 +4,7 @@ import "./syyle.css"
 import Form from 'react-bootstrap/Form'
 import Cards from './Cards'
 
+import Ans from './Ans'
 const Search = () => {
 
     const [fdata, setFdata] = useState(Fooddata);
@@ -12,6 +13,19 @@ const Search = () => {
     const [copydata, setCopyData] = useState([]);
 
     // console.log(copydata);
+    const chanegData = (e) => {
+      let getchangedata = e.toLowerCase();
+
+      if (getchangedata === "") {
+          setCopyData(fdata);
+      } else {
+          let storedata = copydata.filter((ele, k) => {
+              return ele.rname.toLowerCase().match(getchangedata);
+          });
+
+          setCopyData(storedata)
+      }
+  }
 
 
     
@@ -40,7 +54,7 @@ const Search = () => {
                 <Form.Group className=" mx-2 col-lg-4" controlId="formBasicEmail">
 
                     <Form.Control type="text"
-                        
+                        onChange={(e) => chanegData(e.target.value)}
                         placeholder="Search Restaurant" />
                 </Form.Group>
                 <button className='btn text-light col-lg-1' style={{ background: "#ed4c67" }}>Submit</button>
@@ -51,10 +65,9 @@ const Search = () => {
                 <h2 className='px-4' style={{ fontWeight: 400 }}>Restaurants Open In Indore .</h2>
 
                 <div className="row mt-2 d-flex justify-content-around align-items-center">
-<Cards data={fdata}/>
+  {copydata && copydata.length ? <Cards data={copydata}/> : <Ans ams={fdata}/>}
                 </div>
             </section>
-            
         </>
     )
 }
